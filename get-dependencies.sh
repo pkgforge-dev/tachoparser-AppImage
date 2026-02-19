@@ -73,7 +73,7 @@ if [ $rc -ne 0 ]; then
 fi
 
 # 5) Notify success
-zenity --info --width=600 --height=400 --text="Success: $input_file → $output_file"
+zenity --info --width=600 --height=200 --text="Success: $input_file → $output_file"
 exit 0
 ' > /usr/bin/dddui
 chmod +x /usr/bin/dddui
