@@ -78,3 +78,5 @@ zenity --info --text="Success: $input_file → $output_file"
 exit 0
 ' > /usr/bin/dddui
 chmod +x /usr/bin/dddui
+mkdir -p ./AppDir/bin
+cp /usr/bin/dddui ./AppDir/bin/dddui
