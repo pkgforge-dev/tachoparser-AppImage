@@ -18,6 +18,7 @@ quick-sharun /usr/bin/dddparser \
     	     /usr/bin/dddserver \
     	     /usr/bin/dddclient \
     	     /usr/bin/dddsimple \
+    	     /usr/bin/dddui \
 			 /usr/bin/zenity
 
 # Turn AppDir into AppImage
