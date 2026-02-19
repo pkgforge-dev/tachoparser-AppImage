@@ -29,16 +29,15 @@ if [ $status -ne 0 ] || [ -z "$input_file" ]; then
     exit 1
 fi
 
-# 2) Select output file (save)
-output_file="$(zenity --file-selection --save \
-    --title="Save as..." \
-    --filename="out.json" \
-    --file-filter="*.json")"
+# 2) Select output directory
+output_dir="$(zenity --file-selection --directory \
+    --title="Save in directory...")"
 status=$?
 if [ $status -ne 0 ] || [ -z "$output_file" ]; then
     printf '%s\n' "No output file selected. Exiting." >&2
     exit 1
 fi
+output_file="$output_dir/out.json"
 
 # 3) Ask whether the file is a driver card
 zenity --question \
