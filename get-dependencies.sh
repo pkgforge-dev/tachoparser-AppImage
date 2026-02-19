@@ -33,7 +33,7 @@ fi
 output_dir="$(zenity --file-selection --directory \
     --title="Save in directory...")"
 status=$?
-if [ $status -ne 0 ] || [ -z "$output_file" ]; then
+if [ $status -ne 0 ] || [ -z "$output_dir" ]; then
     printf '%s\n' "No output file selected. Exiting." >&2
     exit 1
 fi
