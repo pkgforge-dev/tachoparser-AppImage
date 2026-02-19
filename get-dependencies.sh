@@ -4,25 +4,77 @@ set -eu
 
 ARCH=$(uname -m)
 
-echo "Installing package dependencies..."
-echo "---------------------------------------------------------------"
-# pacman -Syu --noconfirm PACKAGESHERE
-
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
 get-debloated-pkgs --add-common --prefer-nano
 
-# Comment this out if you need an AUR package
+echo "Installing AUR packages"
+echo "---------------------------------------------------------------"
 make-aur-package zenity-rs-bin
 make-aur-package
 
-# If the application needs to be manually built that has to be done down here
+echo "Make dddui sh script instead, as it works properly compared to the official one"
+echo "---------------------------------------------------------------"
+echo '
+#!/bin/sh
 
-# if you also have to make nightly releases check for DEVEL_RELEASE = 1
-#
-# if [ "${DEVEL_RELEASE-}" = 1 ]; then
-# 	nightly build steps
-# else
-# 	regular build steps
-# fi
+# 1) Select input file (.ddd)
+input_file="$(zenity --file-selection \
+    --title="Select file..." \
+    --filename="$HOME/" \
+    --file-filter="*.ddd")"
+status=$?
+if [ $status -ne 0 ] || [ -z "$input_file" ]; then
+    printf '%s\n' "No input file selected. Exiting." >&2
+    exit 1
+fi
 
+# 2) Select output file (save)
+output_file="$(zenity --file-selection --save --confirm-overwrite \
+    --title="Save as..." \
+    --filename="out.json" \
+    --file-filter="*.json")"
+status=$?
+if [ $status -ne 0 ] || [ -z "$output_file" ]; then
+    printf '%s\n' "No output file selected. Exiting." >&2
+    exit 1
+fi
+
+# 3) Ask whether the file is a driver card
+zenity --question \
+    --title="Card type" \
+    --text="Is it a driver card" \
+    --ok-label="Yes" \
+    --cancel-label="No"
+qstatus=$?
+if [ $qstatus -eq 0 ]; then
+    is_card=1
+elif [ $qstatus -eq 1 ]; then
+    is_card=0
+else
+    # Unexpected zenity return (e.g. error)
+    printf '%s\n' "Error asking for card type. Exiting." >&2
+    exit 1
+fi
+
+# 4) Run dddparser with appropriate flag
+# Use -input and -output flags so the binary reads/writes files directly.
+if [ "$is_card" -eq 1 ]; then
+    dddparser -card -input "$input_file" -output "$output_file"
+    rc=$?
+else
+    dddparser -vu -input "$input_file" -output "$output_file"
+    rc=$?
+fi
+
+if [ $rc -ne 0 ]; then
+    zenity --error --text="Error: dddparser failed (exit code $rc)"
+    printf '%s\n' "dddparser exited with status $rc" >&2
+    exit $rc
+fi
+
+# 5) Notify success
+zenity --info --text="Success: $input_file → $output_file"
+exit 0
+' > /usr/bin/dddui
+chmod +x /usr/bin/dddui
