@@ -30,7 +30,7 @@ if [ $status -ne 0 ] || [ -z "$input_file" ]; then
 fi
 
 # 2) Select output file (save)
-output_file="$(zenity --file-selection --save --confirm-overwrite \
+output_file="$(zenity --file-selection --save \
     --title="Save as..." \
     --filename="out.json" \
     --file-filter="*.json")"
@@ -74,7 +74,7 @@ if [ $rc -ne 0 ]; then
 fi
 
 # 5) Notify success
-zenity --info --text="Success: $input_file → $output_file"
+zenity --info --width=600 --height=400 --text="Success: $input_file → $output_file"
 exit 0
 ' > /usr/bin/dddui
 chmod +x /usr/bin/dddui
