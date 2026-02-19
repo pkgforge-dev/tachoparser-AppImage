@@ -74,7 +74,7 @@ else
 fi
 
 if [ $rc -ne 0 ]; then
-    zenity --error --text="Error: dddparser failed (exit code $rc). See logs for more details..."
+    zenity --error --text="Error: dddparser failed (exit code $rc)"
     printf '%s\n' "dddparser exited with status $rc" >&2
     exit $rc
 fi
