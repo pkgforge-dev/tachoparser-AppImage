@@ -83,6 +83,7 @@ fi
 zenity --info --text="Success: $input_file → $output_file"
 exit 0
 ' > ./AppDir/bin/dddui
+chmod +x ./AppDir/bin/dddui
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
