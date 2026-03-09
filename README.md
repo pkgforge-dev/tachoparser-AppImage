@@ -18,7 +18,7 @@
 </div>
 
 > [!NOTE]  
-> This binary launches zenity GUI dialog by default (`dddui`). To use CLI tools, either rename/symlink the AppImage to the name of the CLI tool or pass it to the AppImage as the 1st argument.
+> This AppImage launches zenity GUI dialog by default (`dddui`). To use CLI tools, either rename/symlink the AppImage to the name of the CLI tool or pass it to the AppImage as the 1st argument.
 
 ---
 
